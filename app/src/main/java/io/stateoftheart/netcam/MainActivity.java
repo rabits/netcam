@@ -47,6 +47,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Conn
     }
 
     protected void onCreate(Bundle savedInstanceState) {
+        showWhenLockedAndTurnScreenOn();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -64,6 +65,20 @@ public class MainActivity extends Activity implements View.OnClickListener, Conn
         Context context = getApplicationContext();
         assert context != null;
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    private void showWhenLockedAndTurnScreenOn() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true);
+            setTurnScreenOn(true);
+        } else {
+            getWindow().addFlags(
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
+                    WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
+            );
+        }
     }
 
     protected void onPause(){
