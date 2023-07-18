@@ -37,11 +37,13 @@ public class MainActivity extends Activity {
 
     private final ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
+            Log.d(TAG,"[onServiceConnected]");
             mCameraService = ((CameraService.LocalBinder)service).getService();
             mCameraService.startPreview(findViewById(R.id.surfaceView));
         }
 
         public void onServiceDisconnected(ComponentName className) {
+            Log.d(TAG,"[onServiceDisconnected]");
             mCameraService = null;
         }
     };
@@ -53,7 +55,6 @@ public class MainActivity extends Activity {
                 if( p1 != null ) {
                     if( Objects.equals(p1.getAction(), CameraService.ACTION_STOPPED) ) {
                         btn_start_stop.setText(R.string.start_button);
-                        btn_start_stop.invalidate();
                     }
                 }
             }
@@ -73,7 +74,6 @@ public class MainActivity extends Activity {
 
         if( Utils.isServiceRunning(this, CameraService.class) ) {
             btn_start_stop.setText(R.string.stop_button);
-            btn_start_stop.invalidate();
         }
     }
 
@@ -117,6 +117,7 @@ public class MainActivity extends Activity {
             } else {
                 if( mCameraService != null ) {
                     unbindService(mConnection);
+                    mCameraService = null;
                 }
                 stopService(new Intent(this, CameraService.class));
             }
@@ -175,6 +176,7 @@ public class MainActivity extends Activity {
         });
 
         OpenGlView surface_view = findViewById(R.id.surfaceView);
+        surface_view.setKeepAspectRatio(true);
         surface_view.getHolder().addCallback(mSurfaceHolderCallback);
     }
 

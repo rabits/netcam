@@ -119,8 +119,11 @@ public class CameraService extends Service implements ConnectCheckerRtsp {
 
         rtspCamera2.setVideoCodec(VideoCodec.H264);
         int rotation = CameraHelper.getCameraOrientation(this);
-        rtspCamera2.prepareVideo(width, height, 30, 5000, 10, rotation);
+        rtspCamera2.prepareVideo(width, height, 30, 5000*1024, 10, rotation);
+        rtspCamera2.prepareAudio(128 * 1024, 48000, true, false, false);
         rtspCamera2.setReTries(10);
+
+        //rtspCamera2.addImageListener();
     }
 
     private void startForeground() {
