@@ -6,9 +6,15 @@
     >
 
     <com.pedro.rtplibrary.view.OpenGlView
+        android:id="@+id/surface_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/surfaceView"
+        />
+
+    <io.stateoftheart.netcam.ml.GraphicOverlay
+        android:id="@+id/graphic_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         />
 
     <TextView

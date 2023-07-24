@@ -28,6 +28,10 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    androidResources {
+        noCompress 'tflite'
+    }
 }
 
 dependencies {
@@ -37,6 +41,9 @@ dependencies {
     // RTSP encoder & server
     implementation 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:2.2.4'
     implementation 'com.github.pedroSG94:RTSP-Server:1.1.8'
+
+    // Machine Learning (ML)
+    implementation 'com.google.mlkit:object-detection-custom:17.0.0'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'

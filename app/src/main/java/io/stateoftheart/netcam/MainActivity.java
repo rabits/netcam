@@ -24,6 +24,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
+import io.stateoftheart.netcam.ml.GraphicOverlay;
+
 public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
     private static final int REQUEST_CAMERA_PERMISSION = 1;
@@ -35,11 +37,15 @@ public class MainActivity extends Activity {
 
     private CameraService mCameraService;
 
+    private GraphicOverlay graphic_overlay;
+    private OpenGlView surface_view;
+
     private final ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             Log.d(TAG,"[onServiceConnected]");
             mCameraService = ((CameraService.LocalBinder)service).getService();
-            mCameraService.startPreview(findViewById(R.id.surfaceView));
+            mCameraService.startML();
+            mCameraService.startPreview(surface_view, graphic_overlay);
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -87,7 +93,7 @@ public class MainActivity extends Activity {
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             Log.d(TAG, "[surfaceChanged] format:" + format + "  width:" + width + "  height:" + height);
             if( mCameraService != null ) {
-                mCameraService.startPreview(findViewById(R.id.surfaceView));
+                mCameraService.startPreview(surface_view, graphic_overlay);
             }
         }
 
@@ -175,9 +181,11 @@ public class MainActivity extends Activity {
             }*/
         });
 
-        OpenGlView surface_view = findViewById(R.id.surfaceView);
+        surface_view = findViewById(R.id.surface_view);
         surface_view.setKeepAspectRatio(true);
         surface_view.getHolder().addCallback(mSurfaceHolderCallback);
+
+        graphic_overlay = findViewById(R.id.graphic_overlay);
     }
 
     private void showWhenLockedAndTurnScreenOn() {
